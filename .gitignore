@@ -1,0 +1,52 @@
+# Compiled object files
+*.o
+*.obj
+*.lo
+*.la
+*.al
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Libraries
+*.a
+*.lib
+*.so
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Build directories
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+# Visual Studio Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*.lock
+
+# Logs
+*.log
+
+# Backup files
+*.bak
+*.old
