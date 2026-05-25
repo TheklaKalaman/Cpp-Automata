@@ -2,4 +2,4 @@
 
 #include "DFA.hpp"
 
-DFA makePlantMachine();
+DFA makeLexerMachine();

@@ -2,41 +2,23 @@
 #include <map>
 #include <utility>
 
+DFA makePlantMachine() {
+    DFA plantMachine;
 
-std::map<std::pair<State, Event>, State> delta = {
-    {{State::OFF, Event::pow}, State::READY},
-    {{State::READY, Event::pow}, State::OFF},
-    {{State::READY, Event::wake}, State::MEAS},
-    {{State::MEAS, Event::ohmi}, State::READY},
-    {{State::MEAS, Event::ohmh}, State::DRY},
-    {{State::MEAS, Event::ohmn}, State::WET},
-    {{State::DRY, Event::pumpa}, State::PUMPING},
-    {{State::PUMPING, Event::pumpo}, State::MEAS},
-    {{State::WET, Event::hi}, State::HI},
-};
+    plantMachine.start = "OFF";
+    plantMachine.accepting = {"OFF", "READY"};
 
-std::string to_string(State state) {
-    switch (state) {
-        case State::OFF:    return "OFF";
-        case State::READY:  return "READY";
-        case State::MEAS:   return "MEAS";
-        case State::DRY:    return "DRY";
-        case State::PUMPING:return "PUMPING";
-        case State::WET:    return "WET";
-        case State::HI:     return "HI";
-        case State::ERROR:  return "ERROR";
-    }
-    return "UNKNOWN";
-}
+    plantMachine.delta = {
+        {{"OFF", 'p'}, "READY"}, //p = power
+        {{"READY", 'p'}, "OFF"},
+        {{"READY", 'w'}, "MEAS"}, //w = wake
+        {{"MEAS", 'i'}, "READY"}, //i = ideal ohm
+        {{"MEAS", 'h'}, "DRY"}, //h = high ohm
+        {{"MEAS", 'l'}, "WET"}, //l = low ohm 
+        {{"DRY", 'a'}, "PUMPING"}, //a = pump activated
+        {{"PUMPING", 'o'}, "MEAS"}, //o = pump off
+        {{"WET", 'x'}, "HI"} //x = drowning plant, need human intervention
+    };
 
-State step(State state, Event event) {
-    auto key = std::make_pair(state, event);
-
-    auto result = delta.find(key);
-
-    if (result != delta.end()) {
-        return result->second;
-    }
-
-    return State::ERROR;
+    return plantMachine;
 }
